@@ -1,0 +1,12 @@
+{% if request.get_full_path == "/twangs/" or "/twang/" in request.get_full_path %}
+{% include "navbar.html" %}
+{% endif %}
+
+<h2>twangs</h2>
+{% for t in twangs %}
+<p><a href="/{{ t.user }}/">@{{ t.user }}</a> on <a href="/twang/{{ t.id }}/">{{ t.date }}</a></p>
+<!-- <p>@{{ t.username }} -- {{ t.display_name }} on {{ t.date }}</p> -->
+<p>{{ t.twang }}</p>
+<p style="font-size: 6px">Twang #{{ t.id }}</p>
+<p>---</p>
+{% endfor %}

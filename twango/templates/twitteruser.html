@@ -1,0 +1,16 @@
+{% extends "navbar.html" %} {% block main %}
+<h1>Profile of: {{ targeteduser.username }}</h1>
+<p>@{{ targeteduser }}</p>
+<p>Display Name: {{ targeteduser.display_name }}</p>
+<p>Number of Twangs: {{ num_twangs }}</p>
+
+<p>Number of Twangonites @{{ targeteduser }} Is Following: {{ num_followers }}</p>
+{% if targeteduser.username != request.user.username %}
+<a href="/followstatus/{{ targeteduser.username }}">
+    <button>{{ follow_status_button }}</button>
+</a>
+{% else %}
+<p>Number of Notifications: {{ notifications }}</p>
+{% endif %} 
+{% include "twangs.html" %}
+{% endblock %}
