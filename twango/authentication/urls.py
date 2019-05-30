@@ -1,6 +1,6 @@
 # from twango.authentication.models import Author, Recipes
 from django.urls import path
-from twango.authentication.views import (login_view, logout_view)
+from twango.authentication.views import (login_view, LogoutView)
 
 # admin.site.register(Author)
 # admin.site.register(Recipes)
@@ -8,5 +8,5 @@ from twango.authentication.views import (login_view, logout_view)
 
 urlpatterns = [
     path("login/", login_view),
-    path("logout/", logout_view)
+    path("logout/", LogoutView.as_view())
 ]
