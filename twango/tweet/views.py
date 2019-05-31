@@ -1,10 +1,10 @@
 import re
 from django.shortcuts import render, reverse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.views import View
 from twango.notification.models import Notification
 from twango.tweet.forms import TwangForm
 from twango.tweet.models import Tweet
+from twango.twitteruser.models import TwitterUser
 
 
 # methods for get and post and use view;
@@ -48,7 +48,8 @@ class TwangCreationView(View):
                       )
 
 
-def twang_view(request, id):
-    html = "twangs.html"
-    twangs = Tweet.objects.filter(id=id)
-    return render(request, html, {"twangs": twangs})
+class TwangView(View):
+    def get(self, request, id):
+        html = "twangs.html"
+        twangs = Tweet.objects.filter(id=id)
+        return render(request, html, {"twangs": twangs})
