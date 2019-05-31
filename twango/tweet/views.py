@@ -25,21 +25,20 @@ class TwangCreationView(View):
                       )
 
     def post(self, request):
-        if request.method == "POST":
-            form = self.form_class(request.POST)
-            if form.is_valid():
-                data = form.cleaned_data
-                twang = Tweet.objects.create(
-                    user=request.user.twitteruser,
-                    twang=data["twang"],
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            twang = Tweet.objects.create(
+                user=request.user.twitteruser,
+                twang=data["twang"],
+            )
+            user_matches = re.findall(r"@(\w+)", data["twang"])
+            for match in user_matches:
+                Notification.objects.create(
+                    username=TwitterUser.objects.filter(
+                        username=match).first(),
+                    twang=twang
                 )
-                user_matches = re.findall(r"@(\w+)", data["twang"])
-                for match in user_matches:
-                    Notification.objects.create(
-                        username=TwitterUser.objects.filter(
-                            username=match).first(),
-                        twang=twang
-                    )
             return HttpResponseRedirect(reverse(self.url_redirect))
         return render(request, self.template_name,
                       {"header": self.header,
