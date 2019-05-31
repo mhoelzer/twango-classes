@@ -4,8 +4,18 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from twango.tweet.models import Tweet
 from twango.tweet.forms import TwangForm
 from django.contrib.auth.decorators import login_required
+# from django.utils.decorators import method_decorator
+from django.views.generic import CreateView
 from twango.notification.models import Notification
 from twango.twitteruser.models import TwitterUser
+
+
+# @method_decorator(login_required, name=twangcreate)
+# class TwangCreationView(CreateView):
+#     html = "../templates/generic.html"
+#     model = Tweet
+#     form_class = TwangForm
+#     success_url = "/"
 
 
 @login_required()

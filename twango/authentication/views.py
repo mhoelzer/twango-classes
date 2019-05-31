@@ -2,7 +2,16 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from twango.authentication.forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
+# from django.views.generic.edit import FormView
 
+
+# class LoginView(FormView):
+#     html = "../templates/generic.html"
+#     form = LoginForm
+#     success_url = "/"
+#     def login_view(self, form, request):
+#         form.log_me_in()
+#         return HttpResponseRedirect(request.GET.get("next", "/"))
 
 def login_view(request):
     html = "../templates/generic.html"

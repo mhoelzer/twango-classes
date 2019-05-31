@@ -8,18 +8,22 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from twango.tweet.models import Tweet
 from twango.twitteruser.models import TwitterUser
+from django.views import View
+from django.utils.decorators import method_decorator
 
 
-@login_required()
-def home_view(request):
-    html = "home.html"
-    currentuser = TwitterUser.objects.get(
-        user=request.user)
-    twangs_of_user = Tweet.objects.filter(user=request.user.twitteruser)
-    followers = currentuser.following.all()
-    twangs_of_followings = Tweet.objects.filter(user__in=followers)
-    # if tu in followers, filter;
-    # make queries list then pass list; call both then convert; lose o_b w/ list
-    twangs = (twangs_of_followings |
-              twangs_of_user).distinct().order_by("-date")
-    return render(request, html, {"twangs": twangs})
+# @login_required()
+# @method_decorator(login_required, name="dispatch")
+class HomeView(View):
+    def get(self, request):
+        html = "home.html"
+        currentuser = TwitterUser.objects.get(
+            user=request.user)
+        twangs_of_user = Tweet.objects.filter(user=request.user.twitteruser)
+        followers = currentuser.following.all()
+        twangs_of_followings = Tweet.objects.filter(user__in=followers)
+        # if tu in followers, filter;
+        # make queries list then pass list; call both then convert; lose o_b w/ list
+        twangs = (twangs_of_followings |
+                twangs_of_user).distinct().order_by("-date")
+        return render(request, html, {"twangs": twangs})

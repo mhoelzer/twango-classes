@@ -15,18 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 
 from twango.authentication.urls import urlpatterns as authentication_urls
 from twango.notification.urls import urlpatterns as notification_urls
 from twango.tweet.urls import urlpatterns as tweet_urls
 from twango.twitteruser.urls import urlpatterns as twitteruser_urls
 
-
-from twango.views import home_view
+from twango.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", home_view, name="home")
+    # path("", HomeView, name="home"),
+    path("", login_required(HomeView.as_view()), name="home")
 ]
 
 urlpatterns += authentication_urls
