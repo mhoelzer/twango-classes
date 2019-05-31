@@ -1,36 +1,37 @@
-from django.shortcuts import render, reverse, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect
 from twango.authentication.forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-# from django.views.generic.edit import FormView
 
 
-# class LoginView(FormView):
-#     html = "../templates/generic.html"
-#     form = LoginForm
-#     success_url = "/"
-#     def login_view(self, form, request):
-#         form.log_me_in()
-#         return HttpResponseRedirect(request.GET.get("next", "/"))
-
-def login_view(request):
-    html = "../templates/generic.html"
+class LoginView(View):
+    template_name = "../templates/generic.html"
+    form_class = LoginForm
+    url_redirect = "/"
     header = "Login"
-    form = None
     button_value = "Login, buddy!"
-    if request.method == "POST":
-        form = LoginForm(request.POST)
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name,
+                      {"header": self.header, "form": form,
+                       "button_value": self.button_value}
+                      )
+
+    def post(self, request):
+        form = self.form_class(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             user = authenticate(
                 username=data["username"], password=data["password"])
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(request.GET.get("next", "/"))
-    else:
-        form = LoginForm()
-    return render(request, html, {"header": header, "form": form,
-                                  "button_value": button_value})
+                return HttpResponseRedirect(
+                    request.GET.get("next", self.url_redirect))
+        return render(request, self.template_name,
+                      {"header": self.header, "form": form,
+                       "button_value": self.button_value}
+                      )
 
 
 class LogoutView(View):
