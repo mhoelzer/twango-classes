@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth.decorators import login_required
 
 from twango.authentication.urls import urlpatterns as authentication_urls
 from twango.notification.urls import urlpatterns as notification_urls
@@ -26,8 +25,7 @@ from twango.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path("", HomeView, name="home"),
-    path("", login_required(HomeView.as_view()), name="home")
+    path("", HomeView.as_view(), name="home"),
 ]
 
 urlpatterns += authentication_urls
